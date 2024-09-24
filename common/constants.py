@@ -54,3 +54,20 @@ PRODUCT_NAME = 'product_name'
 PRODUCT_ID = 'product_id'
 USR = 'USR'
 PRD = 'PRD'
+
+# Request methods
+POST = 'POST'
+PUT = 'PUT'
+GET = 'GET'
+DELETE = 'DELETE'
+
+# Apps
+PRODUCTS ='products'
+AUTHENTICATION = 'authentication'
+
+# Logger Stmts
+UPDATING_PRODUCT_DETAILS = 'Updating product details for product_id:'
+FETCHING_PRODUCT_DETAILS = 'Fetching product details for product_id:'
+DELETING_PRODUCT_DETAILS = 'Deleting product with product_id:'
+VALIDATION_PRODUCT_ERROR = 'Validation error for product:'
+RECEIVED_PRODUCT_DETAILS = 'Received product details:'
