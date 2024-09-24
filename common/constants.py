@@ -6,6 +6,7 @@ CHAR_VERY_LONG_LIMIT = 255
 
 # Database names
 USER_AUTHENTICATION = 'user_authentication'
+PRODUCTS = 'products'
 
 # Response Constants
 MESSAGE = 'message'
