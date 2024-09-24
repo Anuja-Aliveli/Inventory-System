@@ -7,6 +7,10 @@ from authentication.auth_model import UserAuthentication
 from authentication.auth_serializer import UserAuthenticationSerializer
 from common.utils import generate_id, get_latest_id
 
+import logging
+
+logger = logging.getLogger(ct.AUTHENTICATION)
+
 # Password Validations
 def validate_password(password):
     check_password = False
@@ -38,10 +42,11 @@ def validate_password(password):
             check_password = True
     return check_password
 
-@api_view(['POST'])
+@api_view([ct.POST])
 def user_registration(request):
     password = request.data.get(ct.PASSWORD, None)
     user_name = request.data.get(ct.USER_NAME, None)
+    logger.debug(f"{ct.RECEIVED_USER_DETAILS} {user_name} {password}")
     try:
         is_valid_password = validate_password(password)
         if is_valid_password:
@@ -54,9 +59,12 @@ def user_registration(request):
             serializer = UserAuthenticationSerializer(data=user_data)
             if serializer.is_valid():
                 serializer.save()
+                logger.info(f"{ct.USER_REGISTER_SUCCESSFUL} {user_name}")
                 return JsonResponse({ct.MESSAGE: ct.USER_REGISTER_SUCCESSFUL}, status=status.HTTP_201_CREATED)
             else:
+                logger.error(f"{ct.VALIDATION_PRODUCT_ERROR} {serializer.data}")
                 return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as error:
+        logger.error(f"{str(error)} {user_name}")
         return JsonResponse({ct.ERROR: str(error)}, status=status.HTTP_400_BAD_REQUEST)
     
