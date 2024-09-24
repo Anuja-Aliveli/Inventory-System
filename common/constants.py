@@ -11,6 +11,7 @@ PRODUCTS = 'products'
 # Response Constants
 MESSAGE = 'message'
 ERROR = 'error'
+DATA = 'data'
 
 # User Statements
 USER_LOGIN_SUCCESSFUL = 'User Login successful'
@@ -36,6 +37,7 @@ LOGIN_USER_DOES_NOT_EXISTS = 'User Does Not Exists'
 
 # Products Validation
 PRODUCT_CREATED_SUCCESSFULLY = 'Product created successfully'
+PRODUCT_DELETED_SUCCESSFULLY = 'Product deleted successfully'
 PRODUCT_CREATION_FAILED = 'Product creation failed'
 PRODUCT_ALREADY_EXISTS = 'A product with this name already exists.'
 PRODUCT_ID_REQUIRED = 'Product ID is required'

@@ -29,14 +29,12 @@ def add_product(request):
             return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as error:
         return JsonResponse({ct.ERROR: str(error)}, status=status.HTTP_400_BAD_REQUEST)
-    
-    
+
 # Update Product details
-@api_view(['PUT'])
-def update_product_details(request, item_id):
+def update_product_details(data,item_id):
     try:
         product_details = ProductModel.objects.get(product_id=item_id)
-        serializer = ProductsSerializer(product_details, data=request.data, partial=True)
+        serializer = ProductsSerializer(product_details, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse({ct.MESSAGE: ct.PRODUCT_UPDATED_SUCCESSFULLY}, status=status.HTTP_200_OK)
@@ -44,3 +42,39 @@ def update_product_details(request, item_id):
             return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except ProductModel.DoesNotExist:
         return JsonResponse({ct.ERROR: ct.PRODUCT_NOT_FOUND}, status=status.HTTP_404_NOT_FOUND)
+
+# Get Project details
+def get_project_details(item_id):
+    try:
+        product_details = ProductModel.objects.get(product_id=item_id)
+        serializer = ProductsSerializer(product_details)
+        return JsonResponse({ct.DATA: serializer.data}, status=status.HTTP_200_OK)
+    except ProductModel.DoesNotExist:
+        return JsonResponse({ct.ERROR: ct.PRODUCT_NOT_FOUND}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as error:
+        return JsonResponse({ct.ERROR: str(error)}, status=status.HTTP_400_BAD_REQUEST)
+
+# Delete Product details
+def delete_product_details(item_id):
+    try:
+        product_details = ProductModel.objects.get(product_id=item_id)
+        product_details.delete()
+        return JsonResponse({ct.MESSAGE: ct.PRODUCT_DELETED_SUCCESSFULLY}, status=status.HTTP_200_OK)
+    
+    except ProductModel.DoesNotExist:
+        return JsonResponse({ct.ERROR: ct.PRODUCT_NOT_FOUND}, status=status.HTTP_404_NOT_FOUND)
+    
+    except Exception as error:
+        return JsonResponse({ct.ERROR: str(error)}, status=status.HTTP_400_BAD_REQUEST)
+
+# Product Details
+@api_view(['PUT', 'GET', 'DELETE'])
+def product_details(request, item_id):
+    if not item_id:
+        return JsonResponse({ct.ERROR: ct.PRODUCT_ID_REQUIRED}, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'PUT':
+        return update_product_details(request.data, item_id)
+    elif request.method == 'GET':
+        return get_project_details(item_id)
+    elif request.method == 'DELETE':
+        return delete_product_details(item_id)

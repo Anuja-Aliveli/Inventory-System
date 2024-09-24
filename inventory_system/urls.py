@@ -19,12 +19,12 @@ from django.urls import path
 
 from authentication.login import user_login
 from authentication.register import user_registration
-from products.views import add_product, update_product_details
+from products.views import add_product, get_project_details, product_details, update_product_details
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', user_registration),
     path('login/', user_login),
     path('items/', add_product),
-    path('items/<str:item_id>', update_product_details),
+    path('items/<str:item_id>', product_details)
 ]
