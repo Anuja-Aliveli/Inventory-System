@@ -3,9 +3,9 @@ from rest_framework.decorators import api_view
 from common import constants as ct
 from rest_framework import status
 from django.contrib.auth.hashers import make_password
-from inventory_system.authentication.auth_model import UserAuthentication
-from inventory_system.authentication.auth_serializer import UserAuthenticationSerializer
-from inventory_system.common.utils import generate_id, get_latest_id
+from authentication.auth_model import UserAuthentication
+from authentication.auth_serializer import UserAuthenticationSerializer
+from common.utils import generate_id, get_latest_id
 
 # Password Validations
 def validate_password(password):

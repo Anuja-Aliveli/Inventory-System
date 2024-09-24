@@ -20,6 +20,7 @@ USER_REGISTER_SUCCESSFUL = 'User registered successfully'
 JWT_INVALID_TOKEN = 'Invalid Token'
 JWT_TOKEN_EXPIRED = 'Token Expired'
 JWT_TOKEN_REQUIRED = 'Token Required'
+TOKEN_NOT_REQUIRED_FOR_URLS = ['/register/', '/login/']
 
 # Password validation Error Statments
 PASSWORD_LENGTH_ERROR = 'Password should be more than 6 characters'
@@ -34,6 +35,7 @@ LOGIN_USER_DOES_NOT_EXISTS = 'User Does Not Exists'
 
 # Field Constants
 USER_ID = 'user_id'
-USR = 'usr'
+USR = 'USR'
 USER_NAME = 'user_name'
 PASSWORD = 'password'
+TOKEN = 'token'

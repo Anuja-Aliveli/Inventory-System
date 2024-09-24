@@ -17,6 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from authentication.login import user_login
+from authentication.register import user_registration
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('register/', user_registration),
+    path('login/', user_login),
 ]
