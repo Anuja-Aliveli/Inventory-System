@@ -34,9 +34,21 @@ PASSWORD_NUMBER_ERROR = 'Use Atleast 1 Number'
 LOGIN_INVALID_DATA_ERROR = 'Invalid Email or Password'
 LOGIN_USER_DOES_NOT_EXISTS = 'User Does Not Exists'
 
+# Products Validation
+PRODUCT_CREATED_SUCCESSFULLY = 'Product created successfully'
+PRODUCT_CREATION_FAILED = 'Product creation failed'
+PRODUCT_ALREADY_EXISTS = 'A product with this name already exists.'
+PRODUCT_ID_REQUIRED = 'Product ID is required'
+PRODUCT_NOT_FOUND = 'Product not found'
+PRODUCT_UPDATED_SUCCESSFULLY = 'Product updated successfully'
+
 # Field Constants
 USER_ID = 'user_id'
-USR = 'USR'
 USER_NAME = 'user_name'
 PASSWORD = 'password'
 TOKEN = 'token'
+USER = 'user'
+PRODUCT_NAME = 'product_name'
+PRODUCT_ID = 'product_id'
+USR = 'USR'
+PRD = 'PRD'
