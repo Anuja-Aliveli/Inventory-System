@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
+from django.core.cache import cache
 from common import constants as ct
 from common.utils import generate_id, get_latest_id
 from products.products_serializer import ProductsSerializer
@@ -38,14 +39,25 @@ def add_product(request):
         logger.error(f"{str(error)} {product_details[ct.PRODUCT_ID]}")
         return JsonResponse({ct.ERROR: str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view([ct.GET])
+def get_products_list(request):
+    products_list = ProductModel.objects.all()
+    serializer = ProductsSerializer(products_list, many=True)
+    if not products_list:
+        return JsonResponse({ct.MESSAGE: ct.PRODUCT_NOT_FOUND}, status=status.HTTP_404_NOT_FOUND)
+    return JsonResponse({ct.DATA: serializer.data}, status=status.HTTP_200_OK)
+
 # Update Product details
 def update_product_details(data,item_id):
     try:
+        item_cache_data = cache.get(item_id)
         product_details = ProductModel.objects.get(product_id=item_id)
         serializer = ProductsSerializer(product_details, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             logger.info(f"{ct.PRODUCT_UPDATED_SUCCESSFULLY} {item_id}")
+        if item_cache_data:
+            cache.set(item_id, serializer.data, timeout=ct.TIME_OUT)
             return JsonResponse({ct.MESSAGE: ct.PRODUCT_UPDATED_SUCCESSFULLY}, status=status.HTTP_200_OK)
         else:
             logger.error(f"{ct.VALIDATION_PRODUCT_ERROR} {item_id}: {serializer.errors}")
@@ -57,9 +69,12 @@ def update_product_details(data,item_id):
 # Get Project details
 def get_project_details(item_id):
     try:
-        product_details = ProductModel.objects.get(product_id=item_id)
-        serializer = ProductsSerializer(product_details)
-        logger.error(f"{ct.VALIDATION_PRODUCT_ERROR} {item_id}: {serializer.data}")
+        item_cache_data = cache.get(item_id)
+        if not item_cache_data:
+            product_details = ProductModel.objects.get(product_id=item_id)
+            serializer = ProductsSerializer(product_details)
+            logger.error(f"{ct.VALIDATION_PRODUCT_ERROR} {item_id}: {serializer.data}")
+            cache.set(item_id, serializer.data, timeout=ct.TIME_OUT)  # Cache for 15 minutes
         return JsonResponse({ct.DATA: serializer.data}, status=status.HTTP_200_OK)
     except ProductModel.DoesNotExist:
         logger.error(f"{ct.PRODUCT_NOT_FOUND} {item_id}")
@@ -71,6 +86,9 @@ def get_project_details(item_id):
 # Delete Product details
 def delete_product_details(item_id):
     try:
+        item_cache_data = cache.get(item_id)
+        if item_cache_data:
+            cache.delete(item_id)
         product_details = ProductModel.objects.get(product_id=item_id)
         product_details.delete()
         logger.error(f"{ct.PRODUCT_DELETED_SUCCESSFULLY} {item_id}")

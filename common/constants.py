@@ -72,3 +72,6 @@ DELETING_PRODUCT_DETAILS = 'Deleting product with product_id:'
 VALIDATION_PRODUCT_ERROR = 'Validation error for product:'
 RECEIVED_PRODUCT_DETAILS = 'Received product details:'
 RECEIVED_USER_DETAILS = 'Received user details'
+
+# CACHE
+TIME_OUT=60*5
